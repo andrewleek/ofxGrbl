@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	grbl.setup();
-	grbl.Connect("COM3", 115200);
+	grbl.Connect("/dev/ttyUSB0", 115200);
 
 	// set position directly
 	grbl.setPosition(300, 100);
@@ -13,7 +13,7 @@ void ofApp::setup(){
 	grbl.setPosition(300, 100);
 
 	// move from stroke file
-	grbl.loadFromFile("./star.gcode");
+	//grbl.loadFromFile("./star.gcode");
 
 }
 
@@ -36,9 +36,6 @@ void ofApp::exit() {
 void ofApp::keyPressed(int key){
 	switch (key)
 	{
-	case OF_KEY_RETURN:
-		grbl.toggleVisible();
-		break;
 	case OF_KEY_RIGHT:
 		grbl.moveRight(10);
 		break;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxUI.h"
 #include "ofxXmlSettings.h"
 #include "GrblSettings.h"
 class ofxGrbl : public ofBaseApp {
@@ -10,8 +9,6 @@ public:
 	
 	void setup();
 	void update();
-	void draw();
-	void draw(int x, int y, int w, int h);
 	void close();
 
 	void keyPressed(int key);
@@ -28,14 +25,6 @@ public:
 	bool checkMoveCommand(string _line);
 	ofVec3f gcodeToVec3f(string _line);
 	string vec3fToGcode(ofVec3f _vec);
-	bool checkZisDown(string _line);
-	
-	void setDrawMode();
-	void setMoveMode();
-	void setColor(ofColor _color);
-	ofColor color;
-	void setBGColor(ofColor _color);
-	ofColor bgColor;
 
 	void setSettings();
 	void setArea(float x, float y, float z = 0);
@@ -45,7 +34,6 @@ public:
 	void setSpindleSpeed(int _speed, bool _direct = false);
 
 	// controll
-	void drawStrokes();
 	void saveStrokes(string _path = "./strokeList.ngc");
 	void resetStrokes();
 	void home();
@@ -59,20 +47,10 @@ public:
 	void setPosition(float _mmX, float _mmY, float _mmZ = 0.0f);
 	void setPosition(ofVec3f _pos);
 
-	// fbo
-	ofFbo _fbo;
-
-	// Settings
-	void saveSettings();
-	void loadSettings();
-	bool firstTimeLoad;
-
 	// stage
 	int GRBL_WIDTH; // mm
 	int GRBL_HEIGHT; // mm
 	int GRBL_DEPTH; // mm
-	int WINDOW_WIDTH; // px
-	int WINDOW_HEIGHT; // px
 
 	// serial
 	ofSerial serial;
@@ -91,29 +69,14 @@ public:
 	string status;
 	bool isPause;
 	bool isReadyToSend;
-	//int sentCount;
 	string readBuffer;
-	bool isDrawMode = false;
-	bool isDown = false;
 	bool bSpindle = false;
 
 	vector<vector<ofVec3f>> strokeList;
-	vector<ofVec3f> tmpStroke;
-
-	// UI
-	void initUI();
-	void guiEvent(ofxUIEventArgs &e);
-	void toggleVisible();
-	ofxUIScrollableCanvas *gui;
-	float theme;
-	vector<string> baudrateList;
-	vector<string> modeList;
-	float feedback_interval;
 
 	string settingsFileName;
 
 	// events
-	ofEvent<bool> UpDownEvent;
 	ofEvent<ofVec3f> PositionEvent;
 
 	// Grbl Settings

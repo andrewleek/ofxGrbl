@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxXmlSettings.h"
 #include "GrblSettings.h"
 class ofxGrbl : public ofBaseApp {
 

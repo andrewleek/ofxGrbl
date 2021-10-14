@@ -21,10 +21,6 @@ void ofxGrbl::setup() {
 	_settings.Accel = ofVec3f(100, 100, 100);
 	_settings.FeedbackInterval = 10;
 	_settings.SpindleSpeed = 100;
-
-	if(settingsFileName == "") settingsFileName = "grblSettings.xml";
-
-	Connect();
 }
 
 //--------------------------------------------------------------

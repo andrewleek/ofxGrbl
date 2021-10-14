@@ -74,8 +74,6 @@ public:
 
 	vector<vector<ofVec3f>> strokeList;
 
-	string settingsFileName;
-
 	// events
 	ofEvent<ofVec3f> PositionEvent;
 

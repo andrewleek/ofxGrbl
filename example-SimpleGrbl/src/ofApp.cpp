@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	grbl.setup();
-	grbl.Connect("/dev/ttyUSB0", 115200);
+	grbl.connect("/dev/ttyUSB0", 115200);
 
 	// set position directly
 	grbl.setPosition(300, 100);

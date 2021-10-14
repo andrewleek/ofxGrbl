@@ -269,7 +269,7 @@ void ofxGrbl::killAlarmLock() {
 	sendMessage("$X", true);
 }
 
-void ofxGrbl::Connect(string _port, int _baudrate) {
+void ofxGrbl::connect(string _port, int _baudrate) {
 	if (_port == "") _port = port;
 	if (_baudrate <= 0) _baudrate = baudrate;
 

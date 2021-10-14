@@ -33,7 +33,6 @@ public:
 	void setSpindleSpeed(int _speed, bool _direct = false);
 
 	// controll
-	void saveStrokes(string _path = "./strokeList.ngc");
 	void resetStrokes();
 	void home();
 	void homing();
@@ -57,7 +56,7 @@ public:
 	bool isDeviceReady;
 	string port;
 	int baudrate;
-	void Connect(string _port = "", int _baudrate = -1);
+	void connect(string _port = "", int _baudrate = -1);
 
 	// pathes
 	ofVec3f prevPos;

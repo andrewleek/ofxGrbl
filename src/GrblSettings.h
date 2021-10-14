@@ -118,14 +118,9 @@ public:
 
 	// Mode (Spindle/Laser/Plotter)
 	string Mode;
+    
 	// Spindle Speed (S0-S1000)
 	float SpindleSpeed;
-	// Protter Push Distance (0-100mm)
-	float PushDistance;
-	// Z Axis Settings
-	bool isUseZAxis;
-	float UpPos;
-	float DownPos;
 
 	float FeedbackInterval;
 };

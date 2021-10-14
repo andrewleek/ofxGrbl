@@ -11,7 +11,7 @@ void ofxGrbl::setup() {
 	isPause = false;
 
 	// serial
-	serial.getDeviceList();
+	//serial.listDevices();
 	isConnect = false;
 	isDeviceReady = false;
 	port = "COM3";

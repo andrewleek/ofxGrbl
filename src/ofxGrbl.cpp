@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ofxGrbl::setup() {
-	cout << "[ ofxGrbl ] setup()" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] setup()";
 	readBuffer = "";
 	status = "";
 
@@ -28,12 +28,12 @@ void ofxGrbl::update() {
 
 	//int waitCount = 10000;
 	//while (!serial.available() && waitCount > 0) {
-	//	cout << "[ waiting ]" << waitCount << endl;
+	//	ofLogVerbose() << "[ waiting ]" << waitCount;
 	//	waitCount--;
 	//}
 	//if (waitCount == 0) {
 	//	isConnect = false;
-	//	cout << "[ timeout ]" << _port << " is busy." << endl;
+	//	ofLogVerbose() << "[ timeout ]" << _port << " is busy.";
 	//}
 
 	if (isConnect) {
@@ -47,14 +47,16 @@ void ofxGrbl::update() {
 			char _byte = (char)serial.readByte();
 			if (_byte == '\n' || _byte == '\r') {
 				if (readBuffer != "") {
-					cout << "[ ofxGrbl ] [ RECEIVE ] " << readBuffer << endl;
-					if (readBuffer == "ok") {
+					ofLogVerbose() << "[ ofxGrbl ] [ RECEIVE ] " << readBuffer;
+					if (readBuffer == "ok")
+                    {
 						isReadyToSend = true;
 						//sentCount--;
-						//cout << "[ ofxGrbl ] Sent: " << sentCount << endl;
+						//ofLogVerbose() << "[ ofxGrbl ] Sent: " << sentCount;
 					}
-					if (readBuffer == "error: Unsupported command") {
-						cout << "[ ofxGrbl ] [ PAUSED ]" << endl;
+					if (readBuffer == "error: Unsupported command")
+                    {
+						ofLogVerbose() << "[ ofxGrbl ] [ PAUSED ]";
 						isPause = true;
 						isReadyToSend = true;
 					}
@@ -64,7 +66,7 @@ void ofxGrbl::update() {
 						vector<string> _status = ofSplitString(readBuffer, ",");
 						vector<string> _posx = ofSplitString(_status[1], ":");
 						vector<string> _posz = ofSplitString(_status[3], ">");
-						cout << "[ ofxGrbl ] [ POSITION ] " << _posx[1] << ", " << _status[2] << ", " << _posz[0] << endl;
+						ofLogVerbose() << "[ ofxGrbl ] [ POSITION ] " << _posx[1] << ", " << _status[2] << ", " << _posz[0];
 						currentPos = ofVec2f(ofToFloat(_posx[1]) / (float)GRBL_WIDTH, ofToFloat(_status[2]) / (float)GRBL_HEIGHT);
 						*/
 
@@ -73,7 +75,7 @@ void ofxGrbl::update() {
 						status = _status[0];
 						vector<string> _pos_str = ofSplitString(_status[1], ":");
 						vector<string> _pos = ofSplitString(_pos_str[1], ",");
-						cout << "[ ofxGrbl ] [ POSITION ] " << _pos[0] << ", " << _pos[1] << ", " << _pos[2] << endl;
+						ofLogVerbose() << "[ ofxGrbl ] [ POSITION ] " << _pos[0] << ", " << _pos[1] << ", " << _pos[2];
 						currentPos = ofVec3f(ofToFloat(_pos[0]) / (float)GRBL_WIDTH, ofToFloat(_pos[1]) / (float)GRBL_HEIGHT);
 						// Events
 						ofNotifyEvent(PositionEvent, currentPos);
@@ -95,7 +97,7 @@ void ofxGrbl::update() {
 				sendMessage(sendQueList[0], true);
 
 				sendQueList.erase(sendQueList.begin());
-				cout << "[ ofxGrbl ] [ QUE ] " << sendQueList.size() << endl;
+				ofLogVerbose() << "[ ofxGrbl ] [ QUE ] " << sendQueList.size();
 
 				isReadyToSend = false;
 			}
@@ -157,17 +159,17 @@ void ofxGrbl::dragEvent(ofDragInfo dragInfo) {
 			loadFromFile(ofToDataPath(dragInfo.files[i]));
 		}
 		else {
-			cout << "[ ofxGrbl ] Invalid extension. Please use ( .gcode / .ngc / .nc ). " << endl;
+			ofLogVerbose() << "[ ofxGrbl ] Invalid extension. Please use ( .gcode / .ngc / .nc ). ";
 		}
 	}
 }
 
 //--------------------------------------------------------------
 void ofxGrbl::loadFromFile(string _path) {
-	cout << "[ ofxGrbl ] loadFromFile( " << _path << " )" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] loadFromFile( " << _path << " )";
 	string _text = string(ofBufferFromFile(_path));
 	vector<string> _linelist = ofSplitString(_text, "\n", true);
-	cout << "[ ofxGrbl ] loadFromFile() : " << _linelist.size() << " lines." << endl;
+	ofLogVerbose() << "[ ofxGrbl ] loadFromFile() : " << _linelist.size() << " lines.";
 
 	vector<ofVec3f> _tmpVec;
 	for (int i = 0; i < _linelist.size(); i++)
@@ -185,14 +187,14 @@ void ofxGrbl::sendMessage(string _msg, bool direct) {
 				unsigned char* writeByte = (unsigned char*)_message.c_str();
 				serial.writeBytes(writeByte, _message.length());
 				//sentCount++;
-				cout << "[ ofxGrbl ] sendMessage( " << _msg << " )" << endl;
+				ofLogVerbose() << "[ ofxGrbl ] sendMessage( " << _msg << " )";
 			}
 			else {
-				cout << "[ ofxGrbl ] sendMessage() : Message is empty." << endl;
+				ofLogVerbose() << "[ ofxGrbl ] sendMessage() : Message is empty.";
 			}
 		}
 		else {
-			cout << "[ ofxGrbl ] sendMessage() : Serial is not connected." << endl;
+			ofLogVerbose() << "[ ofxGrbl ] sendMessage() : Serial is not connected.";
 		}
 	}
 	else {
@@ -273,7 +275,7 @@ void ofxGrbl::connect(string _port, int _baudrate) {
 	if (_port == "") _port = port;
 	if (_baudrate <= 0) _baudrate = baudrate;
 
-	cout << "[ ofxGrbl ] Connect( " << _port << ", " << _baudrate << " )" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] Connect( " << _port << ", " << _baudrate << " )";
 
 	// reset serial
 	if (isConnect || isDeviceReady) {
@@ -284,9 +286,9 @@ void ofxGrbl::connect(string _port, int _baudrate) {
 
 	isConnect = serial.setup(_port, _baudrate);
 	if (isConnect) {
-		cout << "[ ofxGrbl ] Connected to " << _port << "@" << _baudrate << " !" << endl;
+		ofLogVerbose() << "[ ofxGrbl ] Connected to " << _port << "@" << _baudrate << " !";
 	} else {
-		cout << _port << " is not exists." << endl;
+		ofLogVerbose() << _port << " is not exists.";
 	}
 }
 
@@ -319,23 +321,23 @@ void ofxGrbl::setSettings() {
 }
 
 void ofxGrbl::setArea(float x, float y, float z) {
-	cout << "[ ofxGrbl ] setArea(" << (int)x << ", " << (int)y << ", " << (int)z << ")" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] setArea(" << (int)x << ", " << (int)y << ", " << (int)z << ")";
 	GRBL_WIDTH = x;
 	GRBL_HEIGHT = y;
 	GRBL_DEPTH = z;
 }
 
 void ofxGrbl::setHome(float x, float y, float z) {
-	cout << "[ ofxGrbl ] setHome(" << (int)x << ", " << (int)y << ", " << (int)z << ")" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] setHome(" << (int)x << ", " << (int)y << ", " << (int)z << ")";
 	_settings.HomePosition = ofVec3f(x, y, z);
 }
 void ofxGrbl::setHome(ofVec3f _homePos) {
-	cout << "[ ofxGrbl ] setHome(" << _homePos.x << ", " << _homePos.y << ", " << _homePos.z << ")" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] setHome(" << _homePos.x << ", " << _homePos.y << ", " << _homePos.z << ")";
 	_settings.HomePosition = ofVec3f(_homePos.x, _homePos.y, _homePos.z);
 }
 
 void ofxGrbl::setSpindle(bool _enable, bool _direct) {
-	cout << "[ ofxGrbl ] setSpindle(" << _enable << ", " << _direct << ")" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] setSpindle(" << _enable << ", " << _direct << ")";
 	bSpindle = _enable;
 	if (bSpindle) {
 		sendMessage("M3", _direct);
@@ -346,7 +348,7 @@ void ofxGrbl::setSpindle(bool _enable, bool _direct) {
 }
 
 void ofxGrbl::setSpindleSpeed(int _speed, bool _direct) {
-	cout << "[ ofxGrbl ] setSpindleSpeed(" << _speed << ", " << _direct << ")" << endl;
+	ofLogVerbose() << "[ ofxGrbl ] setSpindleSpeed(" << _speed << ", " << _direct << ")";
 	_settings.SpindleSpeed = _speed;
 	sendMessage("S" + ofToString((int)_settings.SpindleSpeed), _direct);
 }
